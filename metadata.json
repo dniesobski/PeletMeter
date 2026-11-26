@@ -1,5 +1,5 @@
 {
-  "name": "PeletMetr",
+  "name": "PeletMeter",
   "description": "Rejestr wsypów peletu do kotła z miesięcznymi wykresami zużycia i konfiguracją metody obliczeń.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
