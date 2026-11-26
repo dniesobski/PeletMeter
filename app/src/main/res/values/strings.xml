@@ -1,0 +1,111 @@
+<resources>
+    <string name="app_name">PeletMetr</string>
+    <string name="auth_subtitle">Rejestr wsypów peletu do kotła i przejrzyste wykresy miesięcznego zużycia.</string>
+    <string name="auth_feature_1">Szybkie dodawanie wsypu w workach lub kilogramach</string>
+    <string name="auth_feature_2">Miesięczne wykresy zużycia z rozliczeniem między wsypami</string>
+    <string name="auth_feature_3">Bezpieczna synchronizacja danych w chmurze Google</string>
+    <string name="auth_sign_in_google">Zaloguj się przez Google</string>
+    <string name="auth_signing_in">Logowanie…</string>
+    <string name="auth_hero_desc">Ilustracja kotła na pelet i drewnianego opału</string>
+
+    <string name="nav_charts">Wykresy</string>
+    <string name="nav_history">Historia</string>
+    <string name="nav_settings">Ustawienia</string>
+    <string name="fab_add_entry">Dodaj wsyp</string>
+
+    <string name="charts_title">Zużycie peletu</string>
+    <string name="charts_monthly_heading">Wykres miesięczny (%1$d)</string>
+    <string name="charts_method_badge_full">Metoda: zawsze do pełna</string>
+    <string name="charts_method_badge_direct">Metoda: sumowanie wsypów</string>
+    <string name="charts_kpi_selected_month">Wybrany miesiąc</string>
+    <string name="charts_kpi_year_total">Suma w %1$d r.</string>
+    <string name="charts_kpi_daily_avg">Średnio %1$s kg/dzień</string>
+    <string name="charts_kpi_bags_eq">ok. %1$s worków</string>
+    <string name="charts_kpi_poured_raw">Wsypano w mies.: %1$s kg</string>
+    <string name="charts_full_refill_hint">Pierwszy wsyp jest punktem odniesienia. Kolejne uzupełnienia do pełna wyliczają dokładne zużycie między datami.</string>
+    <string name="charts_recent_title">Ostatnie wsypy</string>
+    <string name="charts_see_all">Zobacz wszystkie</string>
+    <string name="charts_empty_title">Brak zapisanych wsypów</string>
+    <string name="charts_empty_subtitle">Dodaj pierwszy wsyp peletu do kotła, aby rozpocząć monitorowanie miesięcznego zużycia.</string>
+
+    <string name="history_title">Historia wsypów</string>
+    <string name="history_filter_all">Wszystkie</string>
+    <string name="history_empty_title">Historia jest pusta</string>
+    <string name="history_empty_subtitle">Naciśnij przycisk „Dodaj wsyp”, aby zapisać datę oraz ilość worków lub kilogramów.</string>
+    <string name="history_delete_title">Usunąć wpis?</string>
+    <string name="history_delete_message">Czy na pewno chcesz usunąć wsyp z dnia %1$s (%2$s kg)?</string>
+    <string name="action_delete">Usuń</string>
+    <string name="action_cancel">Anuluj</string>
+    <string name="action_edit">Edytuj</string>
+    <string name="action_save">Zapisz</string>
+    <string name="action_retry">Spróbuj ponownie</string>
+
+    <string name="entry_sheet_add_title">Nowy wsyp peletu</string>
+    <string name="entry_sheet_edit_title">Edytuj wsyp peletu</string>
+    <string name="entry_date_label">Data wsypu</string>
+    <string name="entry_unit_label">Jednostka ilości</string>
+    <string name="entry_unit_bags">Worki</string>
+    <string name="entry_unit_kg">Kilogramy (kg)</string>
+    <string name="entry_amount_bags_label">Liczba worków</string>
+    <string name="entry_amount_kg_label">Ilość w kilogramach</string>
+    <string name="entry_note_label">Notatka (opcjonalnie)</string>
+    <string name="entry_note_placeholder">np. pellet sosnowy, czyszczenie palnika</string>
+    <string name="entry_conversion_bags_to_kg">Łącznie: %1$s kg (przy worku %2$s kg)</string>
+    <string name="entry_conversion_kg_to_bags">Odpowiednik: %1$s worków (po %2$s kg)</string>
+    <string name="entry_save_button">Zapisz wsyp</string>
+    <string name="entry_update_button">Zaktualizuj wsyp</string>
+    <string name="entry_error_invalid_amount">Podaj poprawną ilość większą od zera (maks. 10 000).</string>
+
+    <string name="settings_title">Ustawienia kotła</string>
+    <string name="settings_method_section">Metoda obliczeń zużycia</string>
+    <string name="settings_method_full_title">Zawsze napełniam do pełna</string>
+    <string name="settings_method_full_desc">Domyślna. Ilość wsypana przy kolejnym uzupełnieniu oznacza faktyczne zużycie od poprzedniego wsypu i jest rozdzielana proporcjonalnie na dni oraz miesiące.</string>
+    <string name="settings_method_direct_title">Sumowanie bezpośrednie</string>
+    <string name="settings_method_direct_desc">Proste zliczanie wsypanego peletu w dniu i miesiącu jego dodania do rejestru.</string>
+    <string name="settings_bag_section">Pojemność worka peletu</string>
+    <string name="settings_bag_label">Waga jednego worka (kg)</string>
+    <string name="settings_bag_hint">Typowe worki mają 15 kg lub 20 kg. Zakres: 1–100 kg.</string>
+    <string name="settings_bag_save">Zapisz pojemność</string>
+    <string name="settings_bag_saved">Zapisano ustawienia</string>
+    <string name="settings_bag_invalid">Wprowadź wartość od 1 do 100 kg.</string>
+    <string name="settings_account_section">Konto Google</string>
+    <string name="settings_sign_out">Wyloguj się</string>
+
+    <string name="charts_mode_kg">Zużycie (kg)</string>
+    <string name="charts_mode_cost">Koszt (zł)</string>
+    <string name="charts_avg_price_badge">Śr. cena: %1$s zł/kg (%2$s zł/worek)</string>
+    <string name="charts_month_cost_label">Koszt zużycia: %1$s</string>
+    <string name="charts_no_price_hint">Dodaj ilość i cenę peletu w Ustawieniach, aby obliczać średni koszt zużycia.</string>
+
+    <string name="settings_stock_section">Posiadany pelet i ceny zakupu</string>
+    <string name="settings_stock_hint">Dodawaj partie w workach z ich ceną — aplikacja automatycznie wylicza średnią ważoną cenę zużycia.</string>
+    <string name="settings_stock_date_label">Data zakupu</string>
+    <string name="settings_stock_place_label">Miejsce zakupu (opcjonalnie)</string>
+    <string name="settings_stock_place_placeholder">np. Skład opału Kowalski, Castorama</string>
+    <string name="settings_stock_type_label">Rodzaj peletu (opcjonalnie)</string>
+    <string name="settings_stock_type_placeholder">np. Sosnowy A1, Dębowy</string>
+    <string name="settings_stock_bags_label">Ilość worków</string>
+    <string name="settings_stock_price_per_bag">Cena za 1 worek (zł)</string>
+    <string name="settings_stock_price_total">Cena za całość (zł)</string>
+    <string name="settings_stock_note_label">Opis partii (opcjonalnie)</string>
+    <string name="settings_stock_note_placeholder">np. dostawa z transportem</string>
+    <string name="settings_stock_add_button">Dodaj partię peletu</string>
+    <string name="settings_stock_summary_title">Stan magazynu i średnia cena</string>
+    <string name="settings_stock_remaining">Pozostało w zapasie: %1$s work. (%2$s kg)</string>
+    <string name="settings_stock_purchased">Dodano łącznie: %1$s work. (%2$s kg)</string>
+    <string name="settings_stock_avg_price">Średnia cena: %1$s / worek (%2$s / kg)</string>
+    <string name="settings_stock_invalid">Podaj liczbę worków większą od 0 i poprawną cenę.</string>
+    <string name="settings_stock_empty">Brak dodanych partii. Dodaj pierwszą ilość i cenę powyżej.</string>
+
+    <string name="settings_update_section">Aktualizacje z GitHub</string>
+    <string name="settings_update_repo">Repozytorium: dniesobski/PeletMeter</string>
+    <string name="settings_update_current_version">Zainstalowana wersja: %1$s (%2$d)</string>
+    <string name="settings_update_check_button">Sprawdź aktualizacje</string>
+    <string name="settings_update_checking">Sprawdzanie na GitHubie…</string>
+    <string name="settings_update_available_title">Dostępna nowa wersja: %1$s</string>
+    <string name="settings_update_open_release">Otwórz wydanie na GitHubie</string>
+    <string name="settings_update_download_apk">Pobierz APK w przeglądarce</string>
+    <string name="settings_update_open_repo">Otwórz repozytorium GitHub</string>
+    <string name="settings_update_up_to_date">Masz najnowszą dostępną wersję (%1$s).</string>
+    <string name="settings_update_no_releases">Brak opublikowanych wydań (Releases). Ostatni commit: %1$s</string>
+</resources>

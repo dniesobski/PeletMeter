@@ -1,0 +1,160 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Global default-deny safety net
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() >= 1 && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    function isValidUserSettings(data) {
+      return data.userId is string &&
+             data.userId == request.auth.uid &&
+             data.bagCapacityKg is number &&
+             data.bagCapacityKg >= 1 &&
+             data.bagCapacityKg <= 100 &&
+             data.calculationMethod is string &&
+             (data.calculationMethod == 'FULL_REFILL' || data.calculationMethod == 'DIRECT_SUM') &&
+             data.createdAt is timestamp &&
+             data.createdAt <= request.time &&
+             data.updatedAt is timestamp &&
+             data.updatedAt <= request.time;
+    }
+
+    function isValidPelletEntry(data) {
+      return data.userId is string &&
+             data.userId == request.auth.uid &&
+             data.dateEpochDay is int &&
+             data.dateEpochDay >= -36500 &&
+             data.dateEpochDay <= 100000 &&
+             data.inputUnit is string &&
+             (data.inputUnit == 'BAGS' || data.inputUnit == 'KG') &&
+             data.inputValue is number &&
+             data.inputValue > 0 &&
+             data.inputValue <= 10000 &&
+             data.bagCapacityKgAtEntry is number &&
+             data.bagCapacityKgAtEntry >= 1 &&
+             data.bagCapacityKgAtEntry <= 100 &&
+             data.weightKg is number &&
+             data.weightKg > 0 &&
+             data.weightKg <= 10000 &&
+             (!('note' in data) || (data.note is string && data.note.size() <= 120)) &&
+             data.createdAt is timestamp &&
+             data.createdAt <= request.time &&
+             data.updatedAt is timestamp &&
+             data.updatedAt <= request.time;
+    }
+
+    function isValidStockBatch(data) {
+      return data.userId is string &&
+             data.userId == request.auth.uid &&
+             data.bagsCount is number &&
+             data.bagsCount > 0 &&
+             data.bagsCount <= 10000 &&
+             data.bagCapacityKg is number &&
+             data.bagCapacityKg >= 1 &&
+             data.bagCapacityKg <= 100 &&
+             data.totalKg is number &&
+             data.totalKg > 0 &&
+             data.totalKg <= 100000 &&
+             data.pricePerBagPln is number &&
+             data.pricePerBagPln >= 0 &&
+             data.pricePerBagPln <= 100000 &&
+             data.totalCostPln is number &&
+             data.totalCostPln >= 0 &&
+             data.totalCostPln <= 10000000 &&
+             (!('purchaseDateEpochDay' in data) || (data.purchaseDateEpochDay is int && data.purchaseDateEpochDay >= -36500 && data.purchaseDateEpochDay <= 100000)) &&
+             (!('purchasePlace' in data) || (data.purchasePlace is string && data.purchasePlace.size() <= 120)) &&
+             (!('pelletType' in data) || (data.pelletType is string && data.pelletType.size() <= 120)) &&
+             (!('note' in data) || (data.note is string && data.note.size() <= 120)) &&
+             data.createdAt is timestamp &&
+             data.createdAt <= request.time &&
+             data.updatedAt is timestamp &&
+             data.updatedAt <= request.time;
+    }
+
+    match /users/{userId} {
+      allow get: if isOwner(userId) && isValidId(userId);
+      allow list: if false;
+
+      allow create: if isOwner(userId) &&
+                       isValidId(userId) &&
+                       incoming().keys().hasAll(['userId', 'bagCapacityKg', 'calculationMethod', 'createdAt', 'updatedAt']) &&
+                       incoming().keys().hasOnly(['userId', 'bagCapacityKg', 'calculationMethod', 'createdAt', 'updatedAt']) &&
+                       isValidUserSettings(incoming());
+
+      allow update: if isOwner(userId) &&
+                       isValidId(userId) &&
+                       isValidUserSettings(incoming()) &&
+                       incoming().userId == existing().userId &&
+                       incoming().createdAt == existing().createdAt &&
+                       incoming().diff(existing()).affectedKeys().hasOnly(['bagCapacityKg', 'calculationMethod', 'updatedAt']);
+
+      allow delete: if isOwner(userId) && isValidId(userId);
+
+      match /entries/{entryId} {
+        allow get: if isOwner(userId) && isValidId(userId) && isValidId(entryId);
+        allow list: if isOwner(userId) && isValidId(userId);
+
+        allow create: if isOwner(userId) &&
+                         isValidId(userId) &&
+                         isValidId(entryId) &&
+                         incoming().keys().hasAll(['userId', 'dateEpochDay', 'inputUnit', 'inputValue', 'bagCapacityKgAtEntry', 'weightKg', 'createdAt', 'updatedAt']) &&
+                         incoming().keys().hasOnly(['userId', 'dateEpochDay', 'inputUnit', 'inputValue', 'bagCapacityKgAtEntry', 'weightKg', 'note', 'createdAt', 'updatedAt']) &&
+                         isValidPelletEntry(incoming());
+
+        allow update: if isOwner(userId) &&
+                         isValidId(userId) &&
+                         isValidId(entryId) &&
+                         isValidPelletEntry(incoming()) &&
+                         incoming().userId == existing().userId &&
+                         incoming().createdAt == existing().createdAt &&
+                         incoming().diff(existing()).affectedKeys().hasOnly(['dateEpochDay', 'inputUnit', 'inputValue', 'bagCapacityKgAtEntry', 'weightKg', 'note', 'updatedAt']);
+
+        allow delete: if isOwner(userId) && isValidId(userId) && isValidId(entryId);
+      }
+
+      match /stock_batches/{batchId} {
+        allow get: if isOwner(userId) && isValidId(userId) && isValidId(batchId);
+        allow list: if isOwner(userId) && isValidId(userId);
+
+        allow create: if isOwner(userId) &&
+                         isValidId(userId) &&
+                         isValidId(batchId) &&
+                         incoming().keys().hasAll(['userId', 'bagsCount', 'bagCapacityKg', 'totalKg', 'pricePerBagPln', 'totalCostPln', 'purchaseDateEpochDay', 'createdAt', 'updatedAt']) &&
+                         incoming().keys().hasOnly(['userId', 'bagsCount', 'bagCapacityKg', 'totalKg', 'pricePerBagPln', 'totalCostPln', 'purchaseDateEpochDay', 'purchasePlace', 'pelletType', 'note', 'createdAt', 'updatedAt']) &&
+                         isValidStockBatch(incoming());
+
+        allow update: if isOwner(userId) &&
+                         isValidId(userId) &&
+                         isValidId(batchId) &&
+                         isValidStockBatch(incoming()) &&
+                         incoming().userId == existing().userId &&
+                         incoming().createdAt == existing().createdAt &&
+                         incoming().diff(existing()).affectedKeys().hasOnly(['bagsCount', 'bagCapacityKg', 'totalKg', 'pricePerBagPln', 'totalCostPln', 'purchaseDateEpochDay', 'purchasePlace', 'pelletType', 'note', 'updatedAt']);
+
+        allow delete: if isOwner(userId) && isValidId(userId) && isValidId(batchId);
+      }
+    }
+  }
+}

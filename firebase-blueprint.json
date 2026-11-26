@@ -1,0 +1,154 @@
+{
+  "entities": {
+    "UserSettings": {
+      "title": "UserSettings",
+      "description": "User preferences for pellet bag capacity and boiler consumption calculation method.",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "description": "Authenticated user ID."
+        },
+        "bagCapacityKg": {
+          "type": "number",
+          "description": "Capacity of one pellet bag in kilograms (1 to 100)."
+        },
+        "calculationMethod": {
+          "type": "string",
+          "enum": ["FULL_REFILL", "DIRECT_SUM"],
+          "description": "Consumption calculation method: FULL_REFILL (default, always fill hopper to full) or DIRECT_SUM."
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp when settings document was created (submitted via FieldValue.serverTimestamp())."
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp when settings document was last updated (submitted via FieldValue.serverTimestamp())."
+        }
+      },
+      "required": ["userId", "bagCapacityKg", "calculationMethod", "createdAt", "updatedAt"]
+    },
+    "PelletEntry": {
+      "title": "PelletEntry",
+      "description": "A single pellet loading/refill record into the boiler.",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "description": "Authenticated user ID."
+        },
+        "dateEpochDay": {
+          "type": "integer",
+          "description": "Calendar day of the refill as epoch day integer."
+        },
+        "inputUnit": {
+          "type": "string",
+          "enum": ["BAGS", "KG"],
+          "description": "Unit originally used when logging the refill."
+        },
+        "inputValue": {
+          "type": "number",
+          "description": "Numeric amount entered in the selected unit."
+        },
+        "bagCapacityKgAtEntry": {
+          "type": "number",
+          "description": "Bag capacity in kg active when the entry was saved."
+        },
+        "weightKg": {
+          "type": "number",
+          "description": "Total resolved pellet weight in kilograms."
+        },
+        "note": {
+          "type": "string",
+          "description": "Optional note (e.g. pellet brand or boiler note), omitted when null/blank."
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp when entry was created (submitted via FieldValue.serverTimestamp())."
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp when entry was last updated (submitted via FieldValue.serverTimestamp())."
+        }
+      },
+      "required": ["userId", "dateEpochDay", "inputUnit", "inputValue", "bagCapacityKgAtEntry", "weightKg", "createdAt", "updatedAt"]
+    },
+    "PelletStockBatch": {
+      "title": "PelletStockBatch",
+      "description": "A batch of owned/purchased pellet bags with its price for weighted-average consumption cost calculations.",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "description": "Authenticated user ID."
+        },
+        "bagsCount": {
+          "type": "number",
+          "description": "Number of pellet bags in this stock batch."
+        },
+        "bagCapacityKg": {
+          "type": "number",
+          "description": "Weight of one bag in kilograms."
+        },
+        "totalKg": {
+          "type": "number",
+          "description": "Total pellet weight in kilograms for this batch."
+        },
+        "pricePerBagPln": {
+          "type": "number",
+          "description": "Price per single bag in PLN."
+        },
+        "totalCostPln": {
+          "type": "number",
+          "description": "Total cost of this batch in PLN."
+        },
+        "purchaseDateEpochDay": {
+          "type": "integer",
+          "description": "Calendar day when this pellet batch was purchased as epoch day integer."
+        },
+        "purchasePlace": {
+          "type": "string",
+          "description": "Optional place or supplier where the pellet batch was purchased, omitted when null/blank."
+        },
+        "pelletType": {
+          "type": "string",
+          "description": "Optional type or wood species of pellet (e.g. Sosnowy, Dębowy), omitted when null/blank."
+        },
+        "note": {
+          "type": "string",
+          "description": "Optional supplier or pellet brand note, omitted when null/blank."
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp when batch was created (submitted via FieldValue.serverTimestamp())."
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp when batch was last updated (submitted via FieldValue.serverTimestamp())."
+        }
+      },
+      "required": ["userId", "bagsCount", "bagCapacityKg", "totalKg", "pricePerBagPln", "totalCostPln", "purchaseDateEpochDay", "createdAt", "updatedAt"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": { "$ref": "#/entities/UserSettings" },
+      "description": "Per-user boiler settings document."
+    },
+    "/users/{userId}/entries/{entryId}": {
+      "schema": { "$ref": "#/entities/PelletEntry" },
+      "description": "Per-user subcollection of pellet boiler refill entries."
+    },
+    "/users/{userId}/stock_batches/{batchId}": {
+      "schema": { "$ref": "#/entities/PelletStockBatch" },
+      "description": "Per-user subcollection of pellet stock purchases with quantity in bags and price."
+    }
+  }
+}
