@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">PeletMetr</string>
+    <string name="app_name">PeletMeter</string>
     <string name="auth_subtitle">Rejestr wsypów peletu do kotła i przejrzyste wykresy miesięcznego zużycia.</string>
     <string name="auth_feature_1">Szybkie dodawanie wsypu w workach lub kilogramach</string>
     <string name="auth_feature_2">Miesięczne wykresy zużycia z rozliczeniem między wsypami</string>
